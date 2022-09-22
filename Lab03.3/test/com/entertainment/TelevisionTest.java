@@ -67,7 +67,7 @@ public class TelevisionTest {
     Television tv2 = new Television("Samsung", 0, DisplayType.OLED);
     assertEquals(tv1.hashCode(), tv2.hashCode());
     Television tv3 = new Television ("Samsung", 1, DisplayType.OLED);
-    assertEquals(tv1.hashCode(), tv3.hashCode());
+    assertNotEquals(tv1.hashCode(), tv3.hashCode());
   }
 
   @Test
