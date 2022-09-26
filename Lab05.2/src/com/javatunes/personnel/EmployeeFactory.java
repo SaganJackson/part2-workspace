@@ -11,8 +11,11 @@ package com.javatunes.personnel;
 import java.sql.Date;
 import java.util.Map;
 
+
 public class EmployeeFactory {
-  
+
+
+
   // prevent direct instantiation - this is an all-static factory class
   private EmployeeFactory() {
   }
@@ -25,7 +28,27 @@ public class EmployeeFactory {
   throws IllegalArgumentException {
     // return value
     Employee emp = null;
-    
+    String type = inputMap.get("type");
+    //TODO If type is not equal to "HE" or "SE", then throw IllegalArgumentException
+    //TODO Read the name and hireDate from inputMap. (Remember: All of the values in the map are strings, but hireDate is java.sql.Date.)
+    //TODO If type is equal to "HE", then read (and parse) rate and hours from inputMap.
+    //TODO If equal to "SE", then read (and parse) salary from inputMap.
+    //TODO Create and return an instance of HourlyEmployee or SalaryEmployee, with the values read from inputMap.
+
+    String name = inputMap.get("name");
+    Date hireDate = Date.valueOf(inputMap.get("hireDate"));
+    if (type.equals("SE")) {
+      Double salary = Double.valueOf(inputMap.get("salary"));
+      emp = new SalariedEmployee(name, hireDate, salary);
+    } else if (type.equals("HE")) {
+      Double rate = Double.valueOf(inputMap.get("rate"));
+      Double hours = Double.valueOf(inputMap.get("hours"));
+      emp = new HourlyEmployee(name, hireDate, rate, hours);
+    }
+
+    else {
+      throw new IllegalArgumentException("unsupported type " + type);
+    }
     return emp;
   }
 }
