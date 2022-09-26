@@ -12,18 +12,20 @@ import java.util.ArrayList;
 import java.util.Collection;
 import gov.irs.TaxPayer;
 
-public enum IRSEnum {
+public enum IRSEnum implements IRS {
   INSTANCE;
   
   // BUSINESS CODE
   private Collection<TaxPayer> payers = new ArrayList<>();
   
+  @Override
   public void collectTaxes() {
     for (TaxPayer payer : payers) {
       payer.payTaxes();
     }
   }
   
+  @Override
   public void register(TaxPayer payer) {
     payers.add(payer);
   }
