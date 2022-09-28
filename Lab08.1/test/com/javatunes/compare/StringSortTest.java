@@ -29,9 +29,12 @@ public class StringSortTest {
     names.sort(new StringLengthComparator());
     System.out.println(names + "\n");
     
-    System.out.println("Increasing length - lambda:");
+    System.out.println("Decreasing length - lambda:");
     // TODO: call names.sort() and pass in an "expression" lambda
     // hint: a compatible lambda will have this form:
     //       (obj1, obj2) -> expression-that-evaluates-to-int
+    // increasing length would be str1.length() - str2.length()
+    names.sort((str1, str2) -> str2.length() - str1.length());
+    System.out.println(names);
   }
 }
