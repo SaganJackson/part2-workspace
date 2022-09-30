@@ -11,5 +11,10 @@ public class MessagePrinterClient {
 
   public static void main(String[] args) {
     // TODO: create two instances of your thread subclass and start them up
+    MessagePrinter printer1 = new MessagePrinter("Hello");
+    printer1.start();
+
+    MessagePrinter printer2 = new MessagePrinter("Goodbye", 1500);
+    printer2.start();
   }
 }

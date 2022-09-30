@@ -8,12 +8,22 @@
 package com.javatunes.thread;
 
 // TODO: extend the Thread class
-public class MessagePrinter {
+public class MessagePrinter extends Thread {
+  private static final int DEFAULT_INTERVAL = 1000;
+
   private String message;
-  
+  private final int interval;
+
   public MessagePrinter(String message) {
-    this.message = message;
+    this(message,DEFAULT_INTERVAL);
     // TODO: set the thread name [important when debugging]
+    setName("Message Printer");
+  }
+
+  public MessagePrinter(String message, int interval) {
+    this.message = message;
+    this.interval = interval;
+    setName(getClass().getSimpleName());
   }
   
   /**
@@ -26,6 +36,15 @@ public class MessagePrinter {
    * You can either leave the catch block empty, or print the exception to stdout.
    */
   public void run() {
-    
+    for (int i=0; i < 10; i++) {
+      System.out.println(getName() + ": " + message);
+
+      try {
+        Thread.sleep(DEFAULT_INTERVAL);
+      }
+      catch (InterruptedException ignored) {
+
+      }
+    }
   }
 }
