@@ -8,6 +8,9 @@
  */
 package com.javatunes.catalog;
 
+import static java.util.Comparator.comparing;
+import static java.util.Comparator.reverseOrder;
+import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.*;
 import java.util.Collection;
 import java.util.Comparator;
@@ -35,8 +38,8 @@ public class CatalogStreamTest {
   public void testArtistStartsWithSortPrice() {
     List<MusicItem> items = allMusicItems.stream()
       .filter(item -> item.getArtist().startsWith("D"))
-      .sorted(Comparator.comparing(item -> item.getPrice()))
-      .collect(Collectors.toList());
+      .sorted(comparing(musicItem -> musicItem.getPrice()))
+      .collect(toList());
     
     assertEquals(2, items.size());
     assertEquals(Long.valueOf(11), items.get(0).getId());
@@ -52,6 +55,14 @@ public class CatalogStreamTest {
   @Test
   public void testTitleEqualsArtistSortNaturalOrder() {
     // TODO
+    List<MusicItem> items = allMusicItems.stream()
+        .filter(item -> item.getTitle().equals(item.getArtist()))
+        .sorted()
+        .collect(toList());
+
+    assertEquals(2, items.size());
+    assertEquals(Long.valueOf(6), items.get(0).getId());
+    assertEquals(Long.valueOf(7), items.get(1).getId());
   }
   
   /**
@@ -64,8 +75,19 @@ public class CatalogStreamTest {
   @Test
   public void testPriceLessThanSortMusicCategory() {
     // TODO
+    List<MusicItem> items = allMusicItems.stream()
+        .filter(item -> item.getPrice() < 12)
+        .sorted(comparing(MusicItem::getMusicCategory))
+        .collect(toList());
+
+    System.out.println(items);
+//    assertEquals(5, items.size());
+//    assertEquals(Long.valueOf(7), items.get(0).getId());
+//    assertEquals(Long.valueOf(13), items.get(1).getId());
+//    assertEquals(Long.valueOf(4), items.get(2).getId());
+//    assertEquals(Long.valueOf(13), items.get(3).getId());
   }
-  
+
   /**
    * TASK: find all "rock" items under 15 dollars and sort them by release date (oldest first).
    * 
@@ -74,6 +96,16 @@ public class CatalogStreamTest {
   @Test
   public void testSortMusicCategorySortReleaseDateDesc() {
     // TODO
+    List<MusicItem> items = allMusicItems.stream()
+        .filter(item -> item.getPrice() < 15 && item.getMusicCategory() == MusicCategory.ROCK)
+        .sorted(comparing(MusicItem::getReleaseDate))
+        .collect(toList());
+
+    System.out.println(items.size());
+    System.out.println(items.get(0));
+    System.out.println(items.get(1));
+    System.out.println(items.get(2));
+
   }
   
   /**
@@ -85,6 +117,23 @@ public class CatalogStreamTest {
   @Test
   public void testPriceGreaterThanSortPriceDescThenMusicCategory() {
     // TODO
+    List<MusicItem> items = allMusicItems.stream()
+        .filter(item ->item.getPrice() > 17)
+        .sorted(Comparator.comparing(MusicItem :: getPrice).reversed()
+            .thenComparing(MusicItem :: getArtist))
+//        .sorted(comparing(MusicItem::getPrice).reversed()
+//          .thenComparing(MusicItem::getArtist))
+        .collect(Collectors.toList());
+
+    System.out.println(items.size());
+    System.out.println(items.get(0));
+    System.out.println(items.get(1));
+    System.out.println(items.get(2));
+    System.out.println(items.get(3));
+    System.out.println(items.get(4));
+    System.out.println(items.get(5));
+    System.out.println(items.get(6));
+
   }
   
   /**
@@ -96,5 +145,15 @@ public class CatalogStreamTest {
   @Test
   public void testReleaseDateSortArtist() {
     // TODO
+    List<MusicItem> items = allMusicItems.stream()
+        .filter(item -> item.getPrice() < 12 && item.getReleaseDate().toString().startsWith("198"))
+        .sorted(comparing(MusicItem::getArtist))
+        .collect(toList());
+
+    System.out.println(items.size());
+    System.out.println(items.get(0));
+    System.out.println(items.get(1));
+    System.out.println(items.get(2));
+    System.out.println(items.get(3));
   }
 }

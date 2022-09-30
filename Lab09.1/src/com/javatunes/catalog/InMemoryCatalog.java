@@ -13,6 +13,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class InMemoryCatalog implements Catalog {
 	
@@ -41,48 +43,40 @@ public class InMemoryCatalog implements Catalog {
 	@Override
 	public MusicItem findById(Long id) {
 		// declare return value
-		MusicItem result = null;
+		return catalogData
+				.stream()
+				.filter((item) -> item.getId().equals(id))
+				.findFirst()
+				.orElse(null);
 
 		// iterate through the catalog, looking for an ID match
-		for (MusicItem item : catalogData) {
-			if (item.getId().equals(id)) {
-				result = item;    // assign to return value
-				break;            // found it - stop looping
-			}
-		}
-		return result;
+
+
+
 	}		
 
 	@Override
 	public Collection<MusicItem> findByKeyword(String keyword) {
 		// declare return value
-		Collection<MusicItem> result = new ArrayList<>();
-
-		// remove case sensitivity
-		keyword = keyword.toLowerCase();
-
-		// iterate through the catalog, looking for a keyword match
-		for (MusicItem item : catalogData) {
-			if (item.getTitle().toLowerCase().contains(keyword) ||
-					item.getArtist().toLowerCase().contains(keyword)) {
-				result.add(item);
-			}
-		}
-		return result;
+		String lowerCaseKeyword = keyword.toLowerCase();
+		return catalogData
+				.stream()
+				.filter(item -> item.getTitle().toLowerCase().contains(lowerCaseKeyword)
+						|| item.getArtist().toLowerCase().contains(lowerCaseKeyword))
+				.collect(Collectors.toList());
 	}
 	
 	@Override
 	public Collection<MusicItem> findByCategory(MusicCategory category) {
 		// declare return value
-		Collection<MusicItem> result = new ArrayList<>();
 
-		// iterate through the catalog, looking for a category match
-		for (MusicItem item : catalogData) {
-			if (item.getMusicCategory() == category) {
-				result.add(item);
-			}
-		}
-		return result;
+		List<MusicItem> items = getAll().stream()
+				.filter(item ->item.getMusicCategory() == category)
+				.collect(Collectors.toList());
+
+		return items;
+
+
 	}	
 	
 	@Override
